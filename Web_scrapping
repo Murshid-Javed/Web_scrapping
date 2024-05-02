@@ -1,0 +1,59 @@
+# Web Scrapping
+
+# beautifulsoup and request
+
+from bs4 import BeautifulSoup
+import requests
+
+URL = "https://www.scrapethissite.com/pages/forms/"
+
+page = requests.get(URL)
+print(type(page))
+
+soup = BeautifulSoup(page.content,"html.parser")
+
+print(soup.prettify())
+
+# FIND AND FIND ALL 
+
+soup.find_all("div")
+
+soup.find_all("div", class_ = "col-md-12")
+
+soup.find_all("p")
+
+soup.find_all("p",class_ = "lead")
+
+soup.find("p", class_ = "lead").text.strip()
+
+
+# Extract text content from <th> tags within <tr> tags
+tr_tags = soup.find_all('tr', class_="team")
+
+# Extract text content from each <tr> tag and print
+for tr in tr_tags:
+    tr_text = tr.get_text(strip=True)
+    print("          ", tr_text)
+
+
+tr_tags = soup.find_all('tr', class_="team")
+
+# Extract text content from each <tr> tag and print with spacing
+for index, tr in enumerate(tr_tags, start=1):
+    tr_text = tr.get_text(strip=True)
+    print(f"Row {index}: {tr_text}\n{'-' * 20}") 
+
+table_row = soup.find_all('tr', class_="team")
+
+# Extract text content from each <tr> tag and print with spacing
+for index, tr in enumerate(table_row, start=1):
+    tr_text = [abz.get_text(strip=True)for abz in tr.find_all(['th', 'td'])]
+    formatted_row = '  '.join(tr_text)  # Adjust this formatting as needed
+    print(f"Row {index}: {formatted_row}\n{'-' * 20}")
+
+letter  = "my name is {} my country is {}"
+name ="aqib"
+country = "pakistan"
+print(letter.format(name,country))
+
+print(type(formatted_row))
